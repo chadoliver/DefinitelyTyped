@@ -38,6 +38,8 @@ declare module When {
         interface NodeFn4<A1, A2, A3, A4, T> extends _.Fn5<A1, A2, A3, A4, NodeCallback<T>, void> { }
         interface NodeFn5<A1, A2, A3, A4, A5, T> extends _.Fn6<A1, A2, A3, A4, A5, NodeCallback<T>, void> { }
     }
+    
+    function isPromiseLike(x: any): x is {then: (...args) => any};
 
     function attempt<T>(
         f: _.Fn0<T>
