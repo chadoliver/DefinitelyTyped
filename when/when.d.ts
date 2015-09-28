@@ -133,6 +133,55 @@ declare module When {
 	function settle<T>(promisesOrValues: OptionallyWrappedArray<T>): Promise<Descriptor<T>[]>;
 
     /**
+     * Traditional array map function, similar to Array.prototype.map(), but allows input to contain promises and/or
+     * values, and mapFunc may return either a value or a promise. The order of items in the input array and the results
+     * will match, however, when.map allows mapping to proceed opportunistically as promises in the array fulfill,
+     * making it extremely efficient. If any of the promises is rejected, the returned promise will be rejected with the
+     * rejection reason of the first promise that was rejected.
+     *
+     * @memberOf when
+     *
+     * @param promisesOrValues an Array or {@link Promise} for an Array, which may contain {@link Promise}s
+     * 		and/or values
+     * @param mapFunc a function that returns a boolean or a promise for a boolean. Value is the fulfilled value of
+     * 		the array element, and index is the index of the array element.
+     */
+    function map<T,U>(promisesOrValues: OptionallyWrappedArray<T>, mapFunc: (value: T, index: number) => U|Promise<U>): Promise<U[]>;
+
+    /**
+     * Filters the input array, returning a promise for the filtered array. The filtering predicate may return a
+     * boolean or promise for boolean. If any of the promises is rejected, the returned promise will be rejected with
+     * the rejection reason of the first promise that was rejected.
+     *
+     * @memberOf when
+     *
+     * @param promisesOrValues an Array or {@link Promise} for an Array, which may contain {@link Promise}s
+     * 		and/or values
+     * @param predicate a function that returns a boolean or a promise for a boolean. Value is the fulfilled value of
+     * 		the array element, and index is the index of the array element.
+     */
+    function filter<T>(promisesOrValues: OptionallyWrappedArray<T>, predicate: (value: T, index: number) => boolean|Promise<boolean>): Promise<T[]>;
+
+    /**
+     * Traditional array reduce function, similar to Array.prototype.reduce(), but input may contain promises and/or
+     * values, and reduceFunc may return either a value or a promise, and initialValue may be a promise for the starting
+     * value. Both when.reduce and when.reduceRight proceed in index order (ascending or descending, respectively),
+     * without any overlapping--in contrast to when.map which proceeds opportunistically. If any of the promises is
+     * rejected, the returned promise will be rejected with the rejection reason of the first promise that was rejected.
+     *
+     * @memberOf when
+     *
+     * @param promisesOrValues an Array or {@link Promise} for an Array, which may contain {@link Promise}s
+     * 		and/or values
+     * @param reducer a function that returns a boolean or a promise for a boolean. Value is the fulfilled value of
+     * 		the array element, and index is the index of the array element.
+	 * @param intialValue the initial value of the accumulator.
+     */
+    type ReduceFunc<T, U> = (currentResult: U, value: T, index: number) => U|Promise<U>;
+    function reduce<T, U>(promisesOrValues: OptionallyWrappedArray<T>, reducer: ReduceFunc<T, U>, initialValue?: U|Promise<U>): Promise<U>;
+    function reduceRight<T, U>(promisesOrValues: OptionallyWrappedArray<T>, reducer: ReduceFunc<T, U>, initialValue?: U|Promise<U>): Promise<U>;
+
+	/**
      * Generates a potentially infinite stream of promises by repeatedly calling f until predicate becomes true.
      * @memberOf when
      * @param f function that, given a seed, returns the next value or a promise for it.

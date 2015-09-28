@@ -130,6 +130,84 @@ when.settle<number>(promisedArrayOfValues).then(onSettled);
 when.settle<number>(promisedArrayOfMixedValues).then(onSettled);
 when.settle<number>(rejectedArrayPromise).then(onSettled);
 
+/* when.map(arr, mapper) */
+
+function mapper(value: number, index: number): string {
+	return "Hi Mom!"
+}
+
+function promisedMapper(value: number, index: number): when.Promise<string> {
+	return when.resolve("Hi Mom!");
+}
+
+when.map<number, string>(arrayOfPromises, mapper).then(console.log);
+when.map<number, string>(arrayOfValues, promisedMapper).then(console.log);
+when.map<number, string>(arrayOfMixedValues, mapper).then(console.log);
+
+when.map<number, string>(promisedArrayOfPromises, promisedMapper).then(console.log);
+when.map<number, string>(promisedArrayOfValues, mapper).then(console.log);
+when.map<number, string>(promisedArrayOfMixedValues, promisedMapper).then(console.log);
+when.map<number, string>(rejectedArrayPromise, mapper).then(console.log);
+
+when.all(when.map(arrayOfPromises, mapper)).then((results: string[]): string => {
+	return results.reduce((r, x) => r + x, '');
+});
+
+/* when.filter(arr, predicate) */
+
+function predicate(value: number, index: number): boolean {
+	return Boolean((index + value) % 2);
+}
+
+function promisedPredicate(value: number, index: number): when.Promise<boolean> {
+	return when.resolve(Boolean((index + value) % 2));
+}
+
+when.filter<number>(arrayOfPromises, predicate).then(console.log);
+when.filter<number>(arrayOfValues, promisedPredicate).then(console.log);
+when.filter<number>(arrayOfMixedValues, predicate).then(console.log);
+
+when.filter<number>(promisedArrayOfPromises, promisedPredicate).then(console.log);
+when.filter<number>(promisedArrayOfValues, predicate).then(console.log);
+when.filter<number>(promisedArrayOfMixedValues, promisedPredicate).then(console.log);
+when.filter<number>(rejectedArrayPromise, predicate).then(console.log);
+
+when.all(when.filter(arrayOfPromises, predicate)).then((results: number[]): number => {
+	return results.reduce((r, x) => r + x, 0);
+});
+
+/* when.reduce(arr, reducer, initialValue) and when.reduceRight(arr, reducer, initialValue) */
+
+function reducer(currentResult: number, value: number, index: number): number {
+	return currentResult + value + index;
+}
+
+function promisedReducer(currentResult: number, value: number, index: number): when.Promise<number> {
+	return when.resolve(currentResult + value + index);
+}
+
+function doSomething(result: number): boolean {
+	return Boolean(result % 2);
+}
+
+when.reduce<number, number>(arrayOfPromises, reducer, 0).then(doSomething);
+when.reduce<number, number>(arrayOfValues, promisedReducer, 0).then(doSomething);
+when.reduce<number, number>(arrayOfMixedValues, reducer, when.resolve(0)).then(doSomething);
+
+when.reduce<number, number>(promisedArrayOfPromises, promisedReducer, when.resolve(0)).then(doSomething);
+when.reduce<number, number>(promisedArrayOfValues, reducer).then(doSomething);
+when.reduce<number, number>(promisedArrayOfMixedValues, promisedReducer).then(doSomething);
+when.reduce<number, number>(rejectedArrayPromise, reducer, 0).then(doSomething);
+
+when.reduceRight<number, number>(arrayOfPromises, reducer, 0).then(doSomething);
+when.reduceRight<number, number>(arrayOfValues, promisedReducer, 0).then(doSomething);
+when.reduceRight<number, number>(arrayOfMixedValues, reducer, when.resolve(0)).then(doSomething);
+
+when.reduceRight<number, number>(promisedArrayOfPromises, promisedReducer, when.resolve(0)).then(doSomething);
+when.reduceRight<number, number>(promisedArrayOfValues, reducer).then(doSomething);
+when.reduceRight<number, number>(promisedArrayOfMixedValues, promisedReducer).then(doSomething);
+when.reduceRight<number, number>(rejectedArrayPromise, reducer, 0).then(doSomething);
+
 /* when.iterate(f, predicate, handler, seed) */
 
 when.iterate(function (x) {
