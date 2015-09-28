@@ -227,12 +227,15 @@ declare module When {
     function resolve<T>(foreign: Thenable<T>): Promise<T>;
     function resolve<T>(value?: T): Promise<T>;
 
-    interface Deferred<T> {
-        notify(update: any): void;
+	interface Resolver<T> {
+		resolve: (value?: T|Promise<T>) => void;
+		reject: (reason: any) => void;
+		notify: (update: any) => void;
+	}
+
+    interface Deferred<T> extends Resolver<T> {
         promise: Promise<T>;
-        reject(reason: any): void;
-        resolve(value?: T): void;
-        resolve(value?: Promise<T>): void;
+		resolver: Resolver<T>;
     }
 
     interface Promise<T> {

@@ -248,9 +248,19 @@ if (when.isPromiseLike(candidate)) {
 /* when.defer() */
 
 var deferred = when.defer<number>();
-promise = deferred.promise;
+
+deferred.promise.then(console.log);
+deferred.resolve();
 deferred.resolve(1);
+deferred.resolve(when.resolve(1));
 deferred.reject(error);
+deferred.notify('progress');
+
+deferred.resolver.resolve();
+deferred.resolver.resolve(1);
+deferred.resolver.resolve(when.resolve(1));
+deferred.resolver.reject(error);
+deferred.resolver.notify('progress');
 
 /* * * * * * * *
  *   Promise   *
