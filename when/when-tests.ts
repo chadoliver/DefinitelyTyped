@@ -11,7 +11,7 @@ class ForeignPromise<T> {
 	}
 
 	then<U>(onFulfilled: (value: T) => U, onRejected?: (reason: any) => U) { return new ForeignPromise<U>(onFulfilled(this.value)); }
-};
+}
 
 var promise: when.Promise<number>;
 var foreign = new ForeignPromise<number>(1);
