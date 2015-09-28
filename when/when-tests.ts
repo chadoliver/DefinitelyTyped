@@ -107,28 +107,28 @@ function onResolved(results: number[]): number {
 	return results.reduce((r, x) => r + x, 0);
 }
 
-when.all(arrayOfPromises).then(onResolved);
-when.all(arrayOfValues).then(onResolved);
-when.all(arrayOfMixedValues).then(onResolved);
+when.all<number>(arrayOfPromises).then(onResolved);
+when.all<number>(arrayOfValues).then(onResolved);
+when.all<number>(arrayOfMixedValues).then(onResolved);
 
-when.all(promisedArrayOfPromises).then(onResolved);
-when.all(promisedArrayOfValues).then(onResolved);
-when.all(promisedArrayOfMixedValues).then(onResolved);
-when.all(rejectedArrayPromise).then(onResolved);
+when.all<number>(promisedArrayOfPromises).then(onResolved);
+when.all<number>(promisedArrayOfValues).then(onResolved);
+when.all<number>(promisedArrayOfMixedValues).then(onResolved);
+when.all<number>(rejectedArrayPromise).then(onResolved);
 
 /* when.settle(arr) */
 function onSettled(descriptors: when.Descriptor<number>[]): number {
 	return descriptors.filter(d => d.state === 'rejected').reduce((r, d) => r + d.value, 0);
 }
 
-when.settle(arrayOfPromises).then(onSettled);
-when.settle(arrayOfValues).then(onSettled);
-when.settle(arrayOfMixedValues).then(onSettled);
+when.settle<number>(arrayOfPromises).then(onSettled);
+when.settle<number>(arrayOfValues).then(onSettled);
+when.settle<number>(arrayOfMixedValues).then(onSettled);
 
-when.settle(promisedArrayOfPromises).then(onSettled);
-when.settle(promisedArrayOfValues).then(onSettled);
-when.settle(promisedArrayOfMixedValues).then(onSettled);
-when.settle(rejectedArrayPromise).then(onSettled);
+when.settle<number>(promisedArrayOfPromises).then(onSettled);
+when.settle<number>(promisedArrayOfValues).then(onSettled);
+when.settle<number>(promisedArrayOfMixedValues).then(onSettled);
+when.settle<number>(rejectedArrayPromise).then(onSettled);
 
 /* when.iterate(f, predicate, handler, seed) */
 
