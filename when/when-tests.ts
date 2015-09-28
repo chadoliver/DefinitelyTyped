@@ -131,6 +131,13 @@ promise = when.resolve(foreign);
 
 promise = when.reject<number>(error);
 
+/* when.isPromiseLike(x) */
+
+var candidate: Number | when.Thenable<Number>;
+if (when.isPromiseLike(candidate)) {
+	candidate.then(console.log);
+}
+
 /* when.defer() */
 
 var deferred = when.defer<number>();
