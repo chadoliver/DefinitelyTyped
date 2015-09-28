@@ -92,6 +92,9 @@ declare module When {
 
 	function isPromiseLike<T>(x: any): x is Thenable<T>;
 
+    // An array or a promise for an array, where each element of the array is either a value or a promise for a value.
+    type OptionallyWrappedArray<T> = Array<T|Promise<T>> | Promise<Array<T|Promise<T>>>;
+
     /**
      * Return a promise that will resolve only once all the supplied promisesOrValues
      * have resolved. The resolution value of the returned promise will be an array
@@ -101,7 +104,7 @@ declare module When {
      * @param promisesOrValues array of anything, may contain a mix
      *      of {@link Promise}s and values
      */
-    function all<T>(promisesOrValues: any[]): Promise<T>;
+    function all<T>(promisesOrValues: OptionallyWrappedArray<T>): Promise<T[]>;
 
     /**
      * Describes the status of a promise.
@@ -127,7 +130,7 @@ declare module When {
      * @param promisesOrValues array of anything, may contain a mix
      *      of {@link Promise}s and values
      */
-    function settle<T>(promisesOrValues: any[]): Promise<Descriptor<T>[]>;
+	function settle<T>(promisesOrValues: OptionallyWrappedArray<T>): Promise<Descriptor<T>[]>;
 
     /**
      * Generates a potentially infinite stream of promises by repeatedly calling f until predicate becomes true.

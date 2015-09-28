@@ -91,15 +91,44 @@ promise = liftedFunc5(when(1), when('2'), when(true), when(4), when('5'));
 
 var joinedPromise: when.Promise<number[]> = when.join(when(1), when(2), when(3));
 
+/* declare a group of arrays with different shapes */
+
+var arrayOfPromises: when.Promise<number>[] = [when(1), when(2), when.reject<number>(new Error("Foo"))];
+var arrayOfValues: number[] = [1, 2, undefined];
+var arrayOfMixedValues: (number|when.Promise<number>)[] = [1, 2, when(3), when(4), when.reject<number>(new Error("Foo"))];
+
+var promisedArrayOfPromises: when.Promise<when.Promise<number>[]> = when([when(1), when(2), when.reject<number>(new Error("Foo"))]);
+var promisedArrayOfValues: when.Promise<number[]> = when([1, 2, undefined]);
+var promisedArrayOfMixedValues: when.Promise<(number|when.Promise<number>)[]> = when([1, 2, when(3), when(4), when.reject<number>(new Error("Foo"))]);
+var rejectedArrayPromise: when.Promise<number[]> = when.reject<number[]>([]);
+
 /* when.all(arr) */
-when.all<number[]>([when(1), when(2), when(3)]).then(results => {
+function onResolved(results: number[]): number {
 	return results.reduce((r, x) => r + x, 0);
-});
+}
+
+when.all(arrayOfPromises).then(onResolved);
+when.all(arrayOfValues).then(onResolved);
+when.all(arrayOfMixedValues).then(onResolved);
+
+when.all(promisedArrayOfPromises).then(onResolved);
+when.all(promisedArrayOfValues).then(onResolved);
+when.all(promisedArrayOfMixedValues).then(onResolved);
+when.all(rejectedArrayPromise).then(onResolved);
 
 /* when.settle(arr) */
-when.settle<number>([when(1), when(2), when.reject(new Error("Foo"))]).then(descriptors => {
+function onSettled(descriptors: when.Descriptor<number>[]): number {
 	return descriptors.filter(d => d.state === 'rejected').reduce((r, d) => r + d.value, 0);
-});
+}
+
+when.settle(arrayOfPromises).then(onSettled);
+when.settle(arrayOfValues).then(onSettled);
+when.settle(arrayOfMixedValues).then(onSettled);
+
+when.settle(promisedArrayOfPromises).then(onSettled);
+when.settle(promisedArrayOfValues).then(onSettled);
+when.settle(promisedArrayOfMixedValues).then(onSettled);
+when.settle(rejectedArrayPromise).then(onSettled);
 
 /* when.iterate(f, predicate, handler, seed) */
 
