@@ -86,7 +86,7 @@ declare module When {
     function lift<A1, A2, A3, A4, T>(f: _.Fn4<A1, A2, A3, A4, T>): _.LiftedFn4<A1, A2, A3, A4, T>;
     function lift<A1, A2, A3, A4, A5, T>(f: _.Fn5<A1, A2, A3, A4, A5, T>): _.LiftedFn5<A1, A2, A3, A4, A5, T>;
 
-    function promise<T>(resolver: (resolve: (value: T) => void, reject: (reason: any) => void) => void): Promise<T>;
+    function promise<T>(resolver: (resolve: (value?: T|Promise<T>) => void, reject: (reason: any) => void) => void): Promise<T>;
 
     function reject<T>(reason: any): Promise<T>;
 
