@@ -40,44 +40,43 @@ declare module When {
     }
 
     function attempt<T>(
-        f: _.Fn0<T>
-    ): Promise<T>;
-
-    function attempt<A1, T>(
-        f: _.Fn1<A1, T>,
-        arg1: A1 | Promise<A1>
-    ): Promise<T>;
-
-    function attempt<A1, A2, T>(
-        f: _.Fn2<A1, A2, T>,
-        arg1: A1 | Promise<A1>,
-        arg2: A2 | Promise<A2>
-    ): Promise<T>;
-
-    function attempt<A1, A2, A3, T>(
-        f: _.Fn3<A1, A2, A3, T>,
-        arg1: A1 | Promise<A1>,
-        arg2: A2 | Promise<A2>,
-        arg3: A3 | Promise<A3>
-    ): Promise<T>;
-
-    function attempt<A1, A2, A3, A4, T>(
-        f: _.Fn4<A1, A2, A3, A4, T>,
-        arg1: A1 | Promise<A1>,
-        arg2: A2 | Promise<A2>,
-        arg3: A3 | Promise<A3>,
-        arg4: A4 | Promise<A4>
-    ): Promise<T>;
-
-    function attempt<A1, A2, A3, A4, A5, T>(
-        f: _.Fn5<A1, A2, A3, A4, A5, T>,
-        arg1: A1 | Promise<A1>,
-        arg2: A2 | Promise<A2>,
-        arg3: A3 | Promise<A3>,
-        arg4: A4 | Promise<A4>,
-        arg5: A5 | Promise<A5>
-    ): Promise<T>;
-
+		f: _.Fn0<T|Promise<T>>
+	): Promise<T>;
+	
+	function attempt<A1, T>(
+		f: _.Fn1<A1, T|Promise<T>>,
+		arg1: A1 | Promise<A1>
+	): Promise<T>;
+	
+	function attempt<A1, A2, T>(
+		f: _.Fn2<A1, A2, T|Promise<T>>,
+		arg1: A1 | Promise<A1>,
+		arg2: A2 | Promise<A2>
+	): Promise<T>;
+	
+	function attempt<A1, A2, A3, T>(
+		f: _.Fn3<A1, A2, A3, T|Promise<T>>,
+		arg1: A1 | Promise<A1>,
+		arg2: A2 | Promise<A2>,
+		arg3: A3 | Promise<A3>
+	): Promise<T>;
+	
+	function attempt<A1, A2, A3, A4, T>(
+		f: _.Fn4<A1, A2, A3, A4, T|Promise<T>>,
+		arg1: A1 | Promise<A1>,
+		arg2: A2 | Promise<A2>,
+		arg3: A3 | Promise<A3>,
+		arg4: A4 | Promise<A4>
+	): Promise<T>;
+	
+	function attempt<A1, A2, A3, A4, A5, T>(
+		f: _.Fn5<A1, A2, A3, A4, A5, T|Promise<T>>,
+		arg1: A1 | Promise<A1>,
+		arg2: A2 | Promise<A2>,
+		arg3: A3 | Promise<A3>,
+		arg4: A4 | Promise<A4>,
+		arg5: A5 | Promise<A5>
+	): Promise<T>;
 
     function lift<T>(f: _.Fn0<T>): _.LiftedFn0<T>;
     function lift<A1, T>(f: _.Fn1<A1, T>): _.LiftedFn1<A1, T>;
